@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable import/no-cycle */
 /* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable no-console */
@@ -38,7 +39,45 @@ const App = () => {
 
   // handle change in slider password length
   const setPasscodeLength = (value) => {
+    console.log('here', value);
     setPasscode({ ...passcode, length: value });
+  };
+
+  // generate password function
+  const generatePassword = () => {
+    // numbers
+    const numbersArray = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+    console.log(numbersArray);
+    // symbols
+    const symbolsArray = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')'];
+    console.log(symbolsArray);
+    // uppercase letters
+    const alpha = Array.from(Array(26)).map((e, i) => i + 97);
+    const lowerCaseLetter = alpha.map((x) => String.fromCharCode(x));
+    console.log(lowerCaseLetter);
+    // lowercase letters
+    const upperCaseLetter = alpha.map((x) => String.fromCharCode(x).toUpperCase());
+    console.log(upperCaseLetter);
+
+    // desconstructing
+    const {
+      length, uppercase, lowercase, symbols, numbers,
+    } = setPasscode;
+    // function to generate random password
+    const generateFullPassword = (length, uppercase, lowercase, symbols, numbers) => {
+      const charactersForPassword = [
+        ...(uppercase ? upperCaseLetter : []),
+        ...(lowercase ? lowerCaseLetter : []),
+        ...(numbers ? numbersArray : []),
+        ...(symbols ? symbolsArray : []),
+      ];
+      const shuffledArray = (array) => array.sort(() => Math.random() - 0.5);
+      const shuffledArrayCharacters = shuffledArray(charactersForPassword).slice(0, length);
+      setHandleText(shuffledArrayCharacters.join(''));
+      console.log(shuffledArrayCharacters);
+      return shuffledArrayCharacters;
+    };
+    generateFullPassword(length, uppercase, lowercase, symbols, numbers);
   };
 
   return (
@@ -69,14 +108,16 @@ const App = () => {
             <CheckBox name="Include lowercase letters" value={passcode.lowercase} onChange={handleChangeLowerCase} />
             <CheckBox name="Include symbols" value={passcode.symbols} onChange={handleChangeSymbols} />
             <CheckBox name="Include numbers" value={passcode.numbers} onChange={handleChangeNumbers} />
-            <Button style={{
-              padding: '10px',
-              display: 'flex',
-              justifyContent: 'center',
-              margin: 'auto',
-              background: '#02adb5',
-              color: 'white',
-            }}
+            <Button
+              style={{
+                padding: '10px',
+                display: 'flex',
+                justifyContent: 'center',
+                margin: 'auto',
+                background: '#02adb5',
+                color: 'white',
+              }}
+              onClick={generatePassword}
             >
               Generate Password
             </Button>

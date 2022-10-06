@@ -1,7 +1,8 @@
+/* eslint-disable no-console */
 /* eslint-disable import/no-cycle */
 /* eslint-disable react/prop-types */
 import {
-  Box, IconButton, TextField, useMediaQuery,
+  Box, IconButton, Input, useMediaQuery,
 } from '@mui/material';
 import React, { useState, useContext } from 'react';
 import { useTheme } from '@mui/material/styles';
@@ -11,7 +12,8 @@ import copy from '../assets/Copy.png';
 
 const PasswordCode = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
-  const { handleText, setHandelText } = useContext(AppContext);
+  const { handleText, setHandleText } = useContext(AppContext);
+  console.log('here', handleText);
   const [copied, setCopied] = useState(false);
   const theme = useTheme();
   return (
@@ -33,13 +35,13 @@ const PasswordCode = () => {
       }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
-          <TextField
+          <Input
             fullWidth
             placeholder="Password will generate here"
             id="fullWidth"
             type="text"
             value={handleText}
-            onChange={(e) => setHandelText(e.target.value)}
+            onChange={(e) => setHandleText(e.target.value)}
             sx={{ backgroundColor: theme.palette.mode === 'light' ? '#fcfcfb' : '#2b2b2b' }}
           />
 
