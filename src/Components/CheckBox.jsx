@@ -7,7 +7,7 @@ import {
   Box, Checkbox, useMediaQuery,
 } from '@mui/material';
 
-function CheckBox({ name, value, onChange }) {
+const CheckBox = ({ name, value, onChange }) => {
   const isMobile = useMediaQuery('(max-width:600px)');
 
   return (
@@ -47,6 +47,6 @@ function CheckBox({ name, value, onChange }) {
       </Box>
     </Box>
   );
-}
+};
 
 export default CheckBox;

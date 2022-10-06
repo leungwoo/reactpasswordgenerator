@@ -5,14 +5,13 @@
 import React, { useState, createContext } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 
-import CheckBox from './Components/CheckBox';
-import Head from './Components/Head';
-import Passwordcode from './Components/Passwordcode';
-import PasscodeLength from './Components/PasscodeLength';
+import {
+  CheckBox, Head, PasswordCode, PasscodeLength,
+} from './Components';
 
 export const AppContext = createContext();
 
-function App() {
+const App = () => {
   const [passcode, setPasscode] = useState({
     length: 10,
     uppercase: false,
@@ -64,7 +63,7 @@ function App() {
                 NB:Update your password every 60days for maximum security.
               </Typography>
             </Box>
-            <Passwordcode />
+            <PasswordCode />
             <PasscodeLength name="Character Length" value={passcode.length} onChange={(e) => (setPasscodeLength(e.target.value))} />
             <CheckBox name="Include uppercase letters" value={passcode.uppercase} onChange={handleChangeUpperCase} />
             <CheckBox name="Include lowercase letters" value={passcode.lowercase} onChange={handleChangeLowerCase} />
@@ -87,7 +86,7 @@ function App() {
     </div>
 
   );
-}
+};
 
 export default App;
 

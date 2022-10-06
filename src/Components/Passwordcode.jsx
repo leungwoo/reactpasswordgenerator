@@ -9,7 +9,7 @@ import { useTheme } from '@mui/material/styles';
 import { AppContext } from '../App';
 import copy from '../assets/Copy.png';
 
-function Passwordcode() {
+const PasswordCode = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const { handleText, setHandelText } = useContext(AppContext);
   const [copied, setCopied] = useState(false);
@@ -56,7 +56,7 @@ function Passwordcode() {
                 src={copy}
                 alt="copyimage"
               />
-            ) : ''}
+            ) : null}
 
           </IconButton>
 
@@ -65,6 +65,6 @@ function Passwordcode() {
       </Box>
     </Box>
   );
-}
+};
 
-export default Passwordcode;
+export default PasswordCode;

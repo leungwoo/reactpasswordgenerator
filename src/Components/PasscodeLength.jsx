@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { pink } from '@mui/material/colors';
 
-function PasscodeLength({ name, value, onChange }) {
+const PasscodeLength = ({ name, value, onChange }) => {
   const isMobile = useMediaQuery('(max-width:600px)');
   return (
     <Box style={{
@@ -45,6 +45,6 @@ function PasscodeLength({ name, value, onChange }) {
       </Box>
     </Box>
   );
-}
+};
 
 export default PasscodeLength;
