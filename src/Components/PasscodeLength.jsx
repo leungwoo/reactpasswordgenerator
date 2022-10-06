@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import {
-  Box, useMediaQuery,
+  Box, Input, useMediaQuery,
 } from '@mui/material';
+import { pink } from '@mui/material/colors';
 
 function PasscodeLength({ name, value, onChange }) {
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -30,12 +31,15 @@ function PasscodeLength({ name, value, onChange }) {
           <h3>{name}</h3>
         </Box>
         <Box sx={{ display: 'flex' }}>
-          <input
+          <Input
             type="number"
             min="4"
             max="20"
             value={value}
             onChange={onChange}
+            sx={{
+              color: pink[800], fontSize: 'large', width: '80px',
+            }}
           />
         </Box>
       </Box>
