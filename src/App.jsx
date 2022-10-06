@@ -1,5 +1,6 @@
+/* eslint-disable no-console */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 
 import CheckBox from './Components/CheckBox';
@@ -8,6 +9,28 @@ import Passwordcode from './Components/Passwordcode';
 import PasscodeLength from './Components/PasscodeLength';
 
 function App() {
+  const [passcode, setPasscode] = useState({
+    length: 5,
+    uppercase: false,
+    lowercase: false,
+    symbols: false,
+    numbers: false,
+  });
+
+  const handleChangeUpperCase = () => {
+    // console.log(passcode.uppercase);
+    setPasscode({ ...passcode, uppercase: !passcode.uppercase });
+  };
+  const handleChangeLowerCase = () => {
+    setPasscode({ ...passcode, lowercase: !passcode.lowercase });
+  };
+  const handleChangeSymbols = () => {
+    setPasscode({ ...passcode, symbols: !passcode.symbols });
+  };
+  const handleChangeNumbers = () => {
+    setPasscode({ ...passcode, numbers: !passcode.numbers });
+  };
+
   return (
     <div>
       <Head />
@@ -37,11 +60,11 @@ function App() {
             </Typography>
           </Box>
           <Passwordcode />
-          <PasscodeLength />
-          <CheckBox name="Include uppercase letters" />
-          <CheckBox name="Include lowercase letters" />
-          <CheckBox name="Include symbol" />
-          <CheckBox name="Include number" />
+          <PasscodeLength name="Character Length" />
+          <CheckBox name="Include uppercase letters" value={passcode.uppercase} onChange={handleChangeUpperCase} />
+          <CheckBox name="Include lowercase letters" value={passcode.lowercase} onChange={handleChangeLowerCase} />
+          <CheckBox name="Include symbols" value={passcode.symbols} onChange={handleChangeSymbols} />
+          <CheckBox name="Include numbers" value={passcode.numbers} onChange={handleChangeNumbers} />
           <Button style={{
             padding: '10px',
             display: 'flex',

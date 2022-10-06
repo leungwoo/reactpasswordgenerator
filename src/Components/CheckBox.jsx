@@ -7,10 +7,9 @@ import {
   Box, Checkbox, useMediaQuery,
 } from '@mui/material';
 
-function CheckBox(props) {
+function CheckBox({ name, value, onChange }) {
   const isMobile = useMediaQuery('(max-width:600px)');
 
-  const { name, value } = props;
   return (
     <Box style={{
       marginTop: '5px',
@@ -35,6 +34,7 @@ function CheckBox(props) {
           <Checkbox
             type="checkbox"
             value={value}
+            onChange={onChange}
             sx={{
               color: pink[800],
               '&.Mui-checked': {
