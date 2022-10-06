@@ -1,11 +1,10 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import {
-  Box, Slider, Typography, useMediaQuery,
+  Box, useMediaQuery,
 } from '@mui/material';
 
-function PasscodeLength(props) {
-  const { name } = props;
+function PasscodeLength({ name, value, onChange }) {
   const isMobile = useMediaQuery('(max-width:600px)');
   return (
     <Box style={{
@@ -17,29 +16,26 @@ function PasscodeLength(props) {
     }}
     >
       <Box style={{
+        display: 'flex',
         width: isMobile ? '350px' : '600px',
         padding: '10px',
         alignItems: 'center',
         background: '#24232C',
         color: '#fff',
         borderRadius: '10px',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
       }}
       >
-        <Box sx={{ width: isMobile ? '100%' : '100%' }}>
-          <Typography>
-            {name}
-            :
-          </Typography>
-          <Slider
-            aria-label="number"
-            defaultValue={10}
-            valueLabelDisplay="auto"
-            value={20}
-            step={5}
-            marks
-            min={5}
-            max={30}
+        <Box style={{ display: 'flex' }}>
+          <h3>{name}</h3>
+        </Box>
+        <Box sx={{ display: 'flex' }}>
+          <input
+            type="number"
+            min="4"
+            max="20"
+            value={value}
+            onChange={onChange}
           />
         </Box>
       </Box>

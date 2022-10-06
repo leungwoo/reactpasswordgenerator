@@ -1,12 +1,19 @@
+/* eslint-disable import/no-cycle */
+/* eslint-disable react/prop-types */
 import {
   Box, IconButton, TextField, useMediaQuery,
 } from '@mui/material';
-import React from 'react';
+import React, { useState, useContext } from 'react';
+import { useTheme } from '@mui/material/styles';
 
+import { AppContext } from '../App';
 import copy from '../assets/Copy.png';
 
 function Passwordcode() {
   const isMobile = useMediaQuery('(max-width:600px)');
+  const { handleText, setHandelText } = useContext(AppContext);
+  const [copied, setCopied] = useState(false);
+  const theme = useTheme();
   return (
     <Box style={{
       display: 'flex',
@@ -28,17 +35,31 @@ function Passwordcode() {
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
           <TextField
             fullWidth
-            label="password"
+            placeholder="Password will generate here"
             id="fullWidth"
             type="text"
-            style={{ color: '#fff' }}
+            value={handleText}
+            onChange={(e) => setHandelText(e.target.value)}
+            sx={{ backgroundColor: theme.palette.mode === 'light' ? '#fcfcfb' : '#2b2b2b' }}
           />
-          <IconButton>
-            <img
-              src={copy}
-              alt="copyimage"
-            />
+
+          <IconButton onClick={() => {
+            if (handleText.length > 0) {
+              navigator.clipboard.writeText(handleText);
+              setCopied(true);
+              setInterval(() => { setCopied(false); }, 2000);
+            }
+          }}
+          >
+            {copied ? (
+              <img
+                src={copy}
+                alt="copyimage"
+              />
+            ) : ''}
+
           </IconButton>
+
         </div>
         <br />
       </Box>

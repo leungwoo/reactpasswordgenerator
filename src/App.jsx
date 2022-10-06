@@ -1,6 +1,8 @@
+/* eslint-disable import/no-cycle */
+/* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable no-console */
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { useState } from 'react';
+import React, { useState, createContext } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 
 import CheckBox from './Components/CheckBox';
@@ -8,15 +10,19 @@ import Head from './Components/Head';
 import Passwordcode from './Components/Passwordcode';
 import PasscodeLength from './Components/PasscodeLength';
 
+export const AppContext = createContext();
+
 function App() {
   const [passcode, setPasscode] = useState({
-    length: 5,
+    length: 10,
     uppercase: false,
     lowercase: false,
     symbols: false,
     numbers: false,
   });
+  const [handleText, setHandleText] = useState('');
 
+  // functions to handle the changes of checkbox
   const handleChangeUpperCase = () => {
     // console.log(passcode.uppercase);
     setPasscode({ ...passcode, uppercase: !passcode.uppercase });
@@ -31,54 +37,55 @@ function App() {
     setPasscode({ ...passcode, numbers: !passcode.numbers });
   };
 
+  // handle change in slider password length
+  const setPasscodeLength = (value) => {
+    setPasscode({ ...passcode, length: value });
+  };
+
   return (
+
     <div>
-      <Head />
-      <Box
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: 'linear-gradient(#4b6cb7, #182848)',
-          height: '100%',
-          paddingLeft: '20px',
-          paddingRight: '20px',
-          paddingBottom: '40px',
-        }}
-      >
-        <Box style={{ paddingTop: '150px' }}>
-          <Box style={{
-            display: 'flex',
+      <AppContext.Provider value={{ handleText, setHandleText }}>
+        <Head />
+        <Box
+          style={{
+            alignItems: 'center',
             justifyContent: 'center',
-            margin: 'auto ',
+            background: 'linear-gradient(#4b6cb7, #182848)',
+            height: '100%',
+            paddingLeft: '20px',
+            paddingRight: '20px',
+            paddingBottom: '40px',
           }}
-          >
-            <Typography
-              variant="h5"
-              style={{ color: ' #817D92', padding: '10px' }}
+        >
+          <Box style={{ paddingTop: '150px' }}>
+            <Box style={{ display: 'flex', justifyContent: 'center', margin: 'auto ' }}>
+              <Typography variant="h5" style={{ color: ' #817D92', padding: '10px' }}>
+                NB:Update your password every 60days for maximum security.
+              </Typography>
+            </Box>
+            <Passwordcode />
+            <PasscodeLength name="Character Length" value={passcode.length} onChange={(e) => (setPasscodeLength(e.target.value))} />
+            <CheckBox name="Include uppercase letters" value={passcode.uppercase} onChange={handleChangeUpperCase} />
+            <CheckBox name="Include lowercase letters" value={passcode.lowercase} onChange={handleChangeLowerCase} />
+            <CheckBox name="Include symbols" value={passcode.symbols} onChange={handleChangeSymbols} />
+            <CheckBox name="Include numbers" value={passcode.numbers} onChange={handleChangeNumbers} />
+            <Button style={{
+              padding: '10px',
+              display: 'flex',
+              justifyContent: 'center',
+              margin: 'auto',
+              background: '#02adb5',
+              color: 'white',
+            }}
             >
-              NB:Update your password every 60days for maximum security.
-            </Typography>
+              Generate Password
+            </Button>
           </Box>
-          <Passwordcode />
-          <PasscodeLength name="Character Length" />
-          <CheckBox name="Include uppercase letters" value={passcode.uppercase} onChange={handleChangeUpperCase} />
-          <CheckBox name="Include lowercase letters" value={passcode.lowercase} onChange={handleChangeLowerCase} />
-          <CheckBox name="Include symbols" value={passcode.symbols} onChange={handleChangeSymbols} />
-          <CheckBox name="Include numbers" value={passcode.numbers} onChange={handleChangeNumbers} />
-          <Button style={{
-            padding: '10px',
-            display: 'flex',
-            justifyContent: 'center',
-            margin: 'auto',
-            background: '#02adb5',
-            color: 'white',
-          }}
-          >
-            Generate Password
-          </Button>
         </Box>
-      </Box>
+      </AppContext.Provider>
     </div>
+
   );
 }
 
