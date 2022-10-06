@@ -4,10 +4,10 @@ import logo from '../assets/cloud.png';
 
 function Head() {
   return (
-    <AppBar style={{ background: 'transparent', padding: '10px' }}>
+    <AppBar style={{ background: 'transparent', padding: '10px', backdropFilter: 'blur(40px)' }}>
       <Toolbar style={{ display: 'flex', justifyContent: 'space-around' }}>
         <img src={logo} alt="logo" width="100px" style={{ borderRadius: '40px' }} />
-        <span style={{ color: '#A4FFAF' }}>
+        <span style={{ color: '#fff' }}>
           Passwords for everyone
         </span>
       </Toolbar>

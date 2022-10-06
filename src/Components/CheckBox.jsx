@@ -1,10 +1,16 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
+
+import { pink } from '@mui/material/colors';
 import {
-  Box, useMediaQuery,
+  Box, Checkbox, useMediaQuery,
 } from '@mui/material';
 
-function CheckBox() {
+function CheckBox(props) {
   const isMobile = useMediaQuery('(max-width:600px)');
+
+  const { name, value } = props;
   return (
     <Box style={{
       marginTop: '5px',
@@ -19,14 +25,22 @@ function CheckBox() {
         padding: '10px',
         alignItems: 'center',
         background: '#24232C',
+        color: '#fff',
         borderRadius: '10px',
         justifyContent: 'center',
       }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <input
+          <h3>{name}</h3>
+          <Checkbox
             type="checkbox"
-            style={{ background: 'transparent', color: '#fff' }}
+            value={value}
+            sx={{
+              color: pink[800],
+              '&.Mui-checked': {
+                color: pink[600],
+              },
+            }}
           />
         </div>
         <br />

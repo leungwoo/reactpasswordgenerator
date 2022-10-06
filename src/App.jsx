@@ -1,12 +1,11 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React from 'react';
-import {
-  Box, Button, Typography,
-} from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 
 import CheckBox from './Components/CheckBox';
 import Head from './Components/Head';
 import Passwordcode from './Components/Passwordcode';
+import PasscodeLength from './Components/PasscodeLength';
 
 function App() {
   return (
@@ -38,17 +37,18 @@ function App() {
             </Typography>
           </Box>
           <Passwordcode />
-          <CheckBox />
-          <CheckBox />
-          <CheckBox />
-          <CheckBox />
+          <PasscodeLength />
+          <CheckBox name="Include uppercase letters" />
+          <CheckBox name="Include lowercase letters" />
+          <CheckBox name="Include symbol" />
+          <CheckBox name="Include number" />
           <Button style={{
             padding: '10px',
             display: 'flex',
             justifyContent: 'center',
             margin: 'auto',
-            background: '#A4FFAF',
-            color: '#817D92',
+            background: '#02adb5',
+            color: 'white',
           }}
           >
             Generate Password

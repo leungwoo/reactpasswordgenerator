@@ -12,6 +12,8 @@ function Passwordcode() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      marginTop: '5px',
+      marginBottom: '10px',
     }}
     >
       <Box style={{
@@ -23,18 +25,17 @@ function Passwordcode() {
         justifyContent: 'center',
       }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
           <TextField
             fullWidth
             label="password"
             id="fullWidth"
             type="text"
-            style={{ background: 'transparent', color: '#fff' }}
+            style={{ color: '#fff' }}
           />
           <IconButton>
             <img
               src={copy}
-              style={{ color: '#A4FFAF' }}
               alt="copyimage"
             />
           </IconButton>
