@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppBar, Toolbar } from '@mui/material';
-import logo from '../assets/password.png';
+import logo from '../assets/cloud.png';
 
 function Head() {
   return (

@@ -4,7 +4,6 @@ import {
   Box, Button, Typography,
 } from '@mui/material';
 
-import './App.css';
 import CheckBox from './Components/CheckBox';
 import Head from './Components/Head';
 import Passwordcode from './Components/Passwordcode';
@@ -18,9 +17,10 @@ function App() {
           alignItems: 'center',
           justifyContent: 'center',
           background: 'linear-gradient(#4b6cb7, #182848)',
-          height: '100vh',
+          height: '100%',
           paddingLeft: '20px',
           paddingRight: '20px',
+          paddingBottom: '40px',
         }}
       >
         <Box style={{ paddingTop: '150px' }}>
@@ -43,12 +43,12 @@ function App() {
           <CheckBox />
           <CheckBox />
           <Button style={{
-            marginTop: '20px',
+            padding: '10px',
             display: 'flex',
             justifyContent: 'center',
             margin: 'auto',
             background: '#A4FFAF',
-            color: 'black',
+            color: '#817D92',
           }}
           >
             Generate Password

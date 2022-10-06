@@ -8,6 +8,7 @@ function CheckBox() {
   return (
     <Box style={{
       marginTop: '5px',
+      marginBottom: '10px',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
