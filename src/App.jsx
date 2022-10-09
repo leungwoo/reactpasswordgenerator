@@ -1,317 +1,244 @@
-/* eslint-disable no-shadow */
-/* eslint-disable import/no-cycle */
-/* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable no-console */
-/* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { useState, createContext } from 'react';
-import { Box, Button, Typography } from '@mui/material';
-
+/* eslint-disable no-plusplus */
+import React, { useEffect, useState } from 'react';
 import {
-  CheckBox, Head, PasswordCode, PasscodeLength,
-} from './Components';
+  Box, Button, FormControlLabel, FormGroup, Grid, IconButton, Slider, Switch, Typography,
+} from '@mui/material';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-export const AppContext = createContext();
+import Head from './Components/Head';
+import Strength from './Components/Strength';
+import {
+  numbers, symbols, upperCaseLetters, lowerCaseLetters,
+} from './Components/Character';
+import { CopySuccess, CopyFailed } from './Components/Message';
+import copy from './assets/Copy.png';
 
 const App = () => {
-  const [passcode, setPasscode] = useState({
-    length: 10,
-    uppercase: false,
-    lowercase: false,
-    symbols: false,
-    numbers: false,
-  });
-  const [handleText, setHandleText] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordLength, setPasswordLength] = useState(10);
+  const [hasUpperCase, setHasUpperCase] = useState(false);
+  const [hasLowerCase, setHasLowerCase] = useState(false);
+  const [hasSymbols, setHasSymbols] = useState(false);
+  const [hasNumbers, setHasNumbers] = useState(false);
 
-  // functions to handle the changes of checkbox
-  const handleChangeUpperCase = () => {
-    // console.log(passcode.uppercase);
-    setPasscode({ ...passcode, uppercase: !passcode.uppercase });
-  };
-  const handleChangeLowerCase = () => {
-    setPasscode({ ...passcode, lowercase: !passcode.lowercase });
-  };
-  const handleChangeSymbols = () => {
-    setPasscode({ ...passcode, symbols: !passcode.symbols });
-  };
-  const handleChangeNumbers = () => {
-    setPasscode({ ...passcode, numbers: !passcode.numbers });
+  const createPassword = (characterList) => {
+    let passcode = '';
+    const characterListLength = characterList.length;
+    for (let i = 0; i < passwordLength; i++) {
+      const characterIndex = Math.floor(Math.random() * characterListLength);
+      passcode += characterList.charAt(characterIndex);
+      console.log(passcode);
+    }
+    return passcode;
   };
 
-  // handle change in slider password length
-  const setPasscodeLength = (value) => {
-    console.log('here', value);
-    setPasscode({ ...passcode, length: value });
+  const notify = (message, hasError = false) => {
+    if (hasError) {
+      toast.error(message, {
+        postion: 'top-center',
+        autoClose: 2500,
+        hideProgressBar: 'false',
+        closeOnClick: 'true',
+        pauseOnHover: 'true',
+        draggable: 'true',
+        progress: undefined,
+      });
+    } else {
+      toast(message, {
+        postion: 'top-center',
+        autoClose: 2500,
+        hideProgressBar: 'false',
+        closeOnClick: 'true',
+        pauseOnHover: 'true',
+        draggable: 'true',
+        progress: undefined,
+      });
+    }
   };
 
-  // generate password function
   const generatePassword = () => {
-    // numbers
-    const numbersArray = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-    console.log(numbersArray);
-    // symbols
-    const symbolsArray = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')'];
-    console.log(symbolsArray);
-    // uppercase letters
-    const alpha = Array.from(Array(26)).map((e, i) => i + 97);
-    const lowerCaseLetter = alpha.map((x) => String.fromCharCode(x));
-    console.log(lowerCaseLetter);
-    // lowercase letters
-    const upperCaseLetter = alpha.map((x) => String.fromCharCode(x).toUpperCase());
-    console.log(upperCaseLetter);
-
-    // desconstructing
-    const {
-      length, uppercase, lowercase, symbols, numbers,
-    } = setPasscode;
-    // function to generate random password
-    const generateFullPassword = (length, uppercase, lowercase, symbols, numbers) => {
-      const charactersForPassword = [
-        ...(uppercase ? upperCaseLetter : []),
-        ...(lowercase ? lowerCaseLetter : []),
-        ...(numbers ? numbersArray : []),
-        ...(symbols ? symbolsArray : []),
-      ];
-      const shuffledArray = (array) => array.sort(() => Math.random() - 0.5);
-      const shuffledArrayCharacters = shuffledArray(charactersForPassword).slice(0, length);
-      setHandleText(shuffledArrayCharacters.join(''));
-      console.log(shuffledArrayCharacters);
-      return shuffledArrayCharacters;
-    };
-    generateFullPassword(length, uppercase, lowercase, symbols, numbers);
+    if (!hasUpperCase && !hasLowerCase && !hasSymbols && !hasNumbers) {
+      notify('To generate password you must have atleast one box checked', true);
+    } else {
+      let characterList = '';
+      if (hasUpperCase) { characterList += upperCaseLetters; }
+      if (hasLowerCase) { characterList += lowerCaseLetters; }
+      if (hasSymbols) { characterList += symbols; }
+      if (hasNumbers) { characterList += numbers; }
+      setPassword(createPassword(characterList));
+      notify('Password is generated Successfully', false);
+    }
   };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(password);
+  };
+
+  const handleCopyPassword = () => {
+    if (password === '') {
+      notify(CopyFailed, true);
+    } else {
+      copyToClipboard(password);
+      notify(CopySuccess, false);
+    }
+  };
+
+  useEffect(() => {
+
+  }, []);
 
   return (
 
     <div>
-      <AppContext.Provider value={{ handleText, setHandleText }}>
-        <Head />
-        <Box
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'linear-gradient(#4b6cb7, #182848)',
-            height: '100%',
-            paddingLeft: '20px',
-            paddingRight: '20px',
-            paddingBottom: '40px',
-          }}
+      <Head />
+      <Box
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          background: 'linear-gradient(#4b6cb7, #182848)',
+          height: '90vh',
+          paddingLeft: '20px',
+          paddingRight: '30px',
+          paddingBottom: '40px',
+          marginTop: '50px',
+        }}
+      >
+        <Grid
+          container
+          xs={12}
+          sm={12}
+          md={5}
+          lg={4}
+          xl={4}
+          sx={{ justifyContent: 'center', marginTop: '10vh', marginBottom: '10vh' }}
         >
-          <Box style={{ paddingTop: '150px' }}>
-            <Box style={{ display: 'flex', justifyContent: 'center', margin: 'auto ' }}>
-              <Typography variant="h5" style={{ color: ' #817D92', padding: '10px' }}>
-                NB:Update your password every 60days for maximum security.
+          <Typography variant="h6" style={{ color: 'grey' }}>
+            Recommended:Change passwords every 90 days.
+          </Typography>
+          <Grid
+            item
+            container
+            sx={{
+              background: 'white',
+              justifyContent: 'space-around',
+              borderRadius: '10px',
+              padding: '1px',
+              alignItems: 'center',
+            }}
+          >
+            <Grid item>
+              <Typography
+                variant="h6"
+                sx={{ wordWrap: 'break-word', width: '100%' }}
+              >
+                {password}
               </Typography>
-            </Box>
-            <PasswordCode />
-            <PasscodeLength name="Character Length" value={passcode.length} onChange={(e) => (setPasscodeLength(e.target.value))} />
-            <CheckBox name="Include uppercase letters" value={passcode.uppercase} onChange={handleChangeUpperCase} />
-            <CheckBox name="Include lowercase letters" value={passcode.lowercase} onChange={handleChangeLowerCase} />
-            <CheckBox name="Include symbols" value={passcode.symbols} onChange={handleChangeSymbols} />
-            <CheckBox name="Include numbers" value={passcode.numbers} onChange={handleChangeNumbers} />
-            <Button
-              style={{
-                padding: '10px',
-                display: 'flex',
-                justifyContent: 'center',
-                margin: 'auto',
-                background: '#02adb5',
-                color: 'white',
-              }}
-              onClick={generatePassword}
-            >
-              Generate Password
-            </Button>
-          </Box>
-        </Box>
-      </AppContext.Provider>
+            </Grid>
+            <Grid item>
+              <IconButton onClick={handleCopyPassword}>
+                <img src={copy} alt="copyimg" />
+              </IconButton>
+            </Grid>
+          </Grid>
+          <Grid
+            container
+            direction="column"
+            sx={{
+              display: 'flex',
+              background: 'white',
+              justifyContent: 'space-between',
+              borderRadius: '10px',
+              padding: '5px',
+              marginTop: '10px',
+              alignItems: 'center',
+            }}
+          >
+            <Grid item container>
+              <Grid item className="slider length details" sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Typography variant="h5">
+                  Password Lenght:
+                </Typography>
+                <Typography variant="h5">
+                  {passwordLength}
+                </Typography>
+              </Grid>
+              <Grid item className="slider" xs={12}>
+                <Slider
+                  sx={{ width: '90%' }}
+                  defaultValue={passwordLength}
+                  onChange={(e) => setPasswordLength(e.target.value)}
+                  aria-label="length"
+                  valueLabelDisplay="auto"
+                  min={8}
+                  max={26}
+                />
+              </Grid>
+            </Grid>
+            <Grid item className="checkboxform">
+              <FormGroup>
+                <FormControlLabel
+                  control={(
+                    <Switch
+                      checked={hasUpperCase}
+                      onChange={(e) => setHasUpperCase(e.target.checked)}
+                      name="hasUpperCase"
+                    />
+)}
+                  label="Add Uppercase Letters"
+                />
+                <FormControlLabel
+                  control={(
+                    <Switch
+                      checked={hasLowerCase}
+                      onChange={(e) => setHasLowerCase(e.target.checked)}
+                      name="hasLowerCase"
+                    />
+)}
+                  label="Add Lowercase Letters"
+                />
+                <FormControlLabel
+                  control={(
+                    <Switch
+                      checked={hasSymbols}
+                      onChange={(e) => setHasSymbols(e.target.checked)}
+                      name="hasSymbols"
+                    />
+)}
+                  label="Add Symbols"
+                />
+                <FormControlLabel
+                  control={(
+                    <Switch
+                      checked={hasNumbers}
+                      onChange={(e) => setHasNumbers(e.target.checked)}
+                      name="hasNumbers"
+                    />
+)}
+                  label="Add Numbers"
+                />
+              </FormGroup>
+            </Grid>
+            <Grid item className="strength" sx={{ display: 'flex' }}>
+              <Strength passwordLength={passwordLength} />
+            </Grid>
+            <Grid item>
+              <Button
+                onClick={generatePassword}
+                className="button"
+                sx={{
+                  display: 'flex', background: '#A4FFAF', color: 'black', borderRadius: '5px',
+                }}
+              >
+                Generate password
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+        <ToastContainer />
+      </Box>
     </div>
-
   );
 };
-
 export default App;
-
-// import { useState } from 'react';
-// import './App.css';
-
-// import Checkbox from './components/Checkbox';
-
-// function App() {
-//   const [passwordGen, setPasswordGen] = useState({
-//     length: 5,
-//     uppercase: false,
-//     lowercase: false,
-//     numbers: false,
-//     symbols: false,
-//   });
-//   const [handelText, setHandelText] = useState('');
-//   const [copied, setCopied] = useState(false);
-
-//   const handleChangeUppercase = () => {
-//     setPasswordGen({
-//       ...passwordGen,
-//       uppercase: !passwordGen.uppercase,
-//     });
-//   };
-
-//   const handleChangeLowercase = () => {
-//     setPasswordGen({
-//       ...passwordGen,
-//       lowercase: !passwordGen.lowercase,
-//     });
-//   };
-
-//   const handleChangeNumbers = () => {
-//     setPasswordGen({
-//       ...passwordGen,
-//       numbers: !passwordGen.numbers,
-//     });
-//   };
-
-//   const handleChangeSymbols = () => {
-//     setPasswordGen({
-//       ...passwordGen,
-//       symbols: !passwordGen.symbols,
-//     });
-//   };
-
-//   const setPasswordLength = (val) => {
-//     setPasswordGen({
-//       ...passwordGen,
-//       length: val,
-//     });
-//   };
-
-//   function generatePassword() {
-//     const numbersArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-//     const symbolsArray = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')'];
-
-//     const characterCodes = Array.from(Array(26)).map((_e, i) => i + 97);
-//     const lowerCaseLetters = characterCodes.map((code) =>
-//       String.fromCharCode(code)
-//     );
-//     const upperCaseLetters = lowerCaseLetters.map((letter) =>
-//       letter.toUpperCase()
-//     );
-
-//     const { length, uppercase, lowercase, numbers, symbols } = passwordGen;
-
-//     const generateTheWord = (
-//       length,
-//       uppercase,
-//       lowercase,
-//       numbers,
-//       symbols
-//     ) => {
-//       const availableCharacters = [
-//         ...(lowercase ? lowerCaseLetters : []),
-//         ...(uppercase ? upperCaseLetters : []),
-//         ...(numbers ? numbersArray : []),
-//         ...(symbols ? symbolsArray : []),
-//       ];
-//       const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
-//       const characters = shuffleArray(availableCharacters).slice(0, length);
-//       setHandelText(characters.join(''));
-//       return characters;
-//     };
-
-//     generateTheWord(length, uppercase, lowercase, numbers, symbols);
-//   }
-
-//   return (
-//     <div className="wrapper">
-//       <div className="container wrapper-box">
-//         <h2>Password Generator</h2>
-//         <div className="password-box">
-//           <input
-//             type="text"
-//             value={handelText}
-//             placeholder=""
-//             autoComplete="off"
-//             onChange={(e) => setHandelText(e.target.value)}
-//           />
-//           <button
-//             className="copy-button"
-//             onClick={() => {
-//               if (handelText.length > 0) {
-//                 navigator.clipboard.writeText(handelText);
-//                 setCopied(true);
-//                 setInterval(() => {
-//                   setCopied(false);
-//                 }, 2000);
-//               }
-//             }}
-//           >
-//             {copied ? 'Copied!' : 'Copy text'}
-//           </button>
-//         </div>
-//         <br />
-//         <div className="word-crieteria__box">
-//           <div>
-//             <label>Password length</label>
-//           </div>
-//           <div>
-//             <input
-//               type="number"
-//               min="4"
-//               max="20"
-//               value={passwordGen.length}
-//               onChange={(e) => setPasswordLength(e.target.value)}
-//             />
-//           </div>
-//         </div>
-//         <div className="word-crieteria__box">
-//           <div>
-//             <label>Include uppercase letters</label>
-//           </div>
-//           <div>
-//             <Checkbox
-//               value={passwordGen.uppercase}
-//               onChange={handleChangeUppercase}
-//             />
-//           </div>
-//         </div>
-//         <div className="word-crieteria__box">
-//           <div>
-//             <label>Include lowercase letters</label>
-//           </div>
-//           <div>
-//             <Checkbox
-//               value={passwordGen.lowercase}
-//               onChange={handleChangeLowercase}
-//             />
-//           </div>
-//         </div>
-//         <div className="word-crieteria__box">
-//           <div>
-//             <label>Include numbers</label>
-//           </div>
-//           <div>
-//             <Checkbox
-//               value={passwordGen.numbers}
-//               onChange={handleChangeNumbers}
-//             />
-//           </div>
-//         </div>
-//         <div className="word-crieteria__box">
-//           <div>
-//             <label>Include symbols</label>
-//           </div>
-//           <div>
-//             <Checkbox
-//               value={passwordGen.symbols}
-//               onChange={handleChangeSymbols}
-//             />
-//           </div>
-//         </div>
-//         <div>
-//           <button className="generate-button" onClick={generatePassword}>
-//             Generate password
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default App;
