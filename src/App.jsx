@@ -49,7 +49,7 @@ const App = () => {
     } else {
       toast(message, {
         postion: 'top-center',
-        autoClose: 4000,
+        autoClose: 5000,
         hideProgressBar: 'false',
         closeOnClick: 'true',
         pauseOnHover: 'true',
@@ -58,9 +58,6 @@ const App = () => {
       });
     }
   };
-  const passswordDelete = () => setTimeout(() => {
-    setPassword('');
-  }, '10000');
 
   const generatePassword = () => {
     if (!hasUpperCase && !hasLowerCase && !hasSymbols && !hasNumbers) {
@@ -72,11 +69,12 @@ const App = () => {
       if (hasSymbols) { characterList += symbols; }
       if (hasNumbers) { characterList += numbers; }
       setPassword(createPassword(characterList));
-      notify('Password is generated Successfully, and will disappear in 10 seconds', false);
-      passswordDelete();
+      notify('Password is generated Successfully, and will disappear in 5 seconds', false);
+      setTimeout(() => {
+        setPassword('');
+      }, 6000);
     }
   };
-  clearTimeout(passswordDelete);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(password);
