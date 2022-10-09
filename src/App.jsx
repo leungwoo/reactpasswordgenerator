@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable no-plusplus */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box, Button, FormControlLabel, FormGroup, Grid, IconButton, Slider, Switch, Typography,
 } from '@mui/material';
@@ -14,6 +14,7 @@ import {
 } from './Components/Character';
 import { CopySuccess, CopyFailed } from './Components/Message';
 import copy from './assets/Copy.png';
+import bgImage from './assets/weblock.jpeg';
 
 const App = () => {
   const [password, setPassword] = useState('');
@@ -48,7 +49,7 @@ const App = () => {
     } else {
       toast(message, {
         postion: 'top-center',
-        autoClose: 2500,
+        autoClose: 4000,
         hideProgressBar: 'false',
         closeOnClick: 'true',
         pauseOnHover: 'true',
@@ -57,6 +58,9 @@ const App = () => {
       });
     }
   };
+  const passswordDelete = () => setTimeout(() => {
+    setPassword('');
+  }, '10000');
 
   const generatePassword = () => {
     if (!hasUpperCase && !hasLowerCase && !hasSymbols && !hasNumbers) {
@@ -68,9 +72,11 @@ const App = () => {
       if (hasSymbols) { characterList += symbols; }
       if (hasNumbers) { characterList += numbers; }
       setPassword(createPassword(characterList));
-      notify('Password is generated Successfully', false);
+      notify('Password is generated Successfully, and will disappear in 10 seconds', false);
+      passswordDelete();
     }
   };
+  clearTimeout(passswordDelete);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(password);
@@ -85,10 +91,6 @@ const App = () => {
     }
   };
 
-  useEffect(() => {
-
-  }, []);
-
   return (
 
     <div>
@@ -97,24 +99,26 @@ const App = () => {
         style={{
           display: 'flex',
           justifyContent: 'center',
-          background: 'linear-gradient(#4b6cb7, #182848)',
-          height: '90vh',
+          backgroundImage: `url(${bgImage})`,
+          height: '100vh',
           paddingLeft: '20px',
           paddingRight: '30px',
           paddingBottom: '40px',
-          marginTop: '50px',
+          marginTop: '10px',
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
         }}
       >
         <Grid
           container
           xs={12}
-          sm={12}
-          md={5}
+          sm={8}
+          md={6}
           lg={4}
           xl={4}
           sx={{ justifyContent: 'center', marginTop: '10vh', marginBottom: '10vh' }}
         >
-          <Typography variant="h6" style={{ color: 'grey' }}>
+          <Typography variant="h7" style={{ color: 'grey', marginTop: '50px' }}>
             Recommended:Change passwords every 90 days.
           </Typography>
           <Grid
@@ -131,7 +135,7 @@ const App = () => {
             <Grid item>
               <Typography
                 variant="h6"
-                sx={{ wordWrap: 'break-word', width: '100%' }}
+                sx={{ wordWrap: 'break-word' }}
               >
                 {password}
               </Typography>
@@ -153,20 +157,22 @@ const App = () => {
               padding: '5px',
               marginTop: '10px',
               alignItems: 'center',
+              paddingTop: '20px',
+              paddingBottom: '30px',
             }}
           >
-            <Grid item container>
-              <Grid item className="slider length details" sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography variant="h5">
-                  Password Lenght:
+            <Grid item container sx={{ padding: '5px' }}>
+              <Grid item container className="slider length details" sx={{ display: 'flex', justifyContent: 'space-around' }}>
+                <Typography variant="h6">
+                  Password Lenght
                 </Typography>
                 <Typography variant="h5">
                   {passwordLength}
                 </Typography>
               </Grid>
-              <Grid item className="slider" xs={12}>
+              <Grid item className="slider" xs={11}>
                 <Slider
-                  sx={{ width: '90%' }}
+                  size="large"
                   defaultValue={passwordLength}
                   onChange={(e) => setPasswordLength(e.target.value)}
                   aria-label="length"
@@ -223,12 +229,16 @@ const App = () => {
             <Grid item className="strength" sx={{ display: 'flex' }}>
               <Strength passwordLength={passwordLength} />
             </Grid>
-            <Grid item>
+            <Grid item sx={{ paddingTop: '10px' }}>
               <Button
                 onClick={generatePassword}
                 className="button"
                 sx={{
-                  display: 'flex', background: '#A4FFAF', color: 'black', borderRadius: '5px',
+
+                  display: 'flex',
+                  background: '#A4FFAF',
+                  color: 'black',
+                  borderRadius: '5px',
                 }}
               >
                 Generate password
