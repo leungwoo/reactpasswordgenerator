@@ -23,12 +23,17 @@ const Strength = (props) => {
       container
       item
       sx={{
-        padding: '10px', borderRadius: '10px', background: 'grey', color: '#A4FFAF',
+        width: '100%',
+        height: '100%',
+        padding: '10px',
+        borderRadius: '10px',
+        background: 'grey',
+        color: '#A4FFAF',
       }}
     >
       <Grid>
         <Typography>
-          Strenght:
+          Strength:
         </Typography>
       </Grid>
       <Typography>

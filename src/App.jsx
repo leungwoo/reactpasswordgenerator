@@ -116,7 +116,7 @@ const App = () => {
           xl={4}
           sx={{ justifyContent: 'center', marginTop: '10vh', marginBottom: '10vh' }}
         >
-          <Typography variant="h7" style={{ color: 'grey', marginTop: '50px' }}>
+          <Typography variant="h7" style={{ color: 'red', marginTop: '50px' }}>
             Recommended:Change passwords every 90 days.
           </Typography>
           <Grid
@@ -126,8 +126,10 @@ const App = () => {
               background: 'white',
               justifyContent: 'space-around',
               borderRadius: '10px',
+              marginTop: '10px',
               padding: '1px',
               alignItems: 'center',
+              boxShadow: ('0px 0px 7px 2px white'),
             }}
           >
             <Grid item>
@@ -153,10 +155,11 @@ const App = () => {
               justifyContent: 'space-between',
               borderRadius: '10px',
               padding: '5px',
-              marginTop: '10px',
+              marginTop: '20px',
               alignItems: 'center',
               paddingTop: '20px',
               paddingBottom: '30px',
+              boxShadow: ('0px 0px 7px 2px white'),
             }}
           >
             <Grid item container sx={{ padding: '5px' }}>
