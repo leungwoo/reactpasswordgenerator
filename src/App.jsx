@@ -235,11 +235,13 @@ const App = () => {
                 onClick={generatePassword}
                 className="button"
                 sx={{
-
                   display: 'flex',
                   background: '#A4FFAF',
                   color: 'black',
                   borderRadius: '5px',
+                  fontWeight: 'bold',
+                  '&:hover': { background: 'black', color: '#A4FFAF' },
+
                 }}
               >
                 Generate password
