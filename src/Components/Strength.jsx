@@ -23,7 +23,7 @@ const Strength = (props) => {
       container
       item
       sx={{
-        width: '100%',
+        width: '180px',
         height: '100%',
         padding: '10px',
         borderRadius: '10px',
