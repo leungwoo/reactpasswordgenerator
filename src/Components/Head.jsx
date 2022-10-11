@@ -4,7 +4,7 @@ import logo from '../assets/cloud.png';
 
 const Head = () => (
   <AppBar style={{
-    background: 'transparent', padding: '10px', backdropFilter: 'blur(40px)', boxShadow: ('0px 0px 20px 10px white'),
+    background: 'transparent', padding: '10px', backdropFilter: 'blur(10px)', boxShadow: ('0px 0px 20px 10px white'),
   }}
   >
     <Toolbar style={{ display: 'flex', justifyContent: 'center' }}>

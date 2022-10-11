@@ -2,8 +2,10 @@
 /* eslint-disable no-plusplus */
 import React, { useState } from 'react';
 import {
-  Box, Button, FormControlLabel, FormGroup, Grid, IconButton, Slider, Switch, Typography,
+  Box, Button, Grid, IconButton, Slider, Typography,
+  useMediaQuery,
 } from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -15,6 +17,7 @@ import {
 import { CopySuccess, CopyFailed } from './Components/Message';
 import copy from './assets/Copy.png';
 import bgImage from './assets/weblock.jpeg';
+import Checkbox from './Components/Checkbox';
 
 const App = () => {
   const [password, setPassword] = useState('');
@@ -23,6 +26,7 @@ const App = () => {
   const [hasLowerCase, setHasLowerCase] = useState(false);
   const [hasSymbols, setHasSymbols] = useState(false);
   const [hasNumbers, setHasNumbers] = useState(false);
+  const isMobile = useMediaQuery('(max-width:600px)');
 
   const createPassword = (characterList) => {
     let passcode = '';
@@ -101,10 +105,8 @@ const App = () => {
           height: '100vh',
           paddingLeft: '20px',
           paddingRight: '30px',
-          paddingBottom: '40px',
-          marginTop: '10px',
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
+          backgroundSize: isMobile ? '' : 'cover',
+          backgroundRepeat: isMobile ? 'repeat' : 'no-repeat',
         }}
       >
         <Grid
@@ -116,20 +118,17 @@ const App = () => {
           xl={4}
           sx={{ justifyContent: 'center', marginTop: '10vh', marginBottom: '10vh' }}
         >
-          <Typography variant="h7" style={{ color: 'red', marginTop: '50px' }}>
-            Recommended:Change passwords every 90 days.
-          </Typography>
           <Grid
             item
             container
             sx={{
               background: 'white',
-              justifyContent: 'space-around',
+              justifyContent: 'space-between',
               borderRadius: '10px',
-              marginTop: '10px',
               padding: '1px',
               alignItems: 'center',
               boxShadow: ('0px 0px 7px 2px white'),
+              marginTop: '100px',
             }}
           >
             <Grid item>
@@ -165,7 +164,7 @@ const App = () => {
             <Grid item container sx={{ padding: '5px' }}>
               <Grid item container className="slider length details" sx={{ display: 'flex', justifyContent: 'space-around' }}>
                 <Typography variant="h6">
-                  Password Lenght
+                  Password Length
                 </Typography>
                 <Typography variant="h5">
                   {passwordLength}
@@ -183,68 +182,39 @@ const App = () => {
                 />
               </Grid>
             </Grid>
-            <Grid item className="checkboxform">
-              <FormGroup>
-                <FormControlLabel
-                  control={(
-                    <Switch
-                      checked={hasUpperCase}
-                      onChange={(e) => setHasUpperCase(e.target.checked)}
-                      name="hasUpperCase"
-                    />
-)}
-                  label="Add Uppercase Letters"
-                />
-                <FormControlLabel
-                  control={(
-                    <Switch
-                      checked={hasLowerCase}
-                      onChange={(e) => setHasLowerCase(e.target.checked)}
-                      name="hasLowerCase"
-                    />
-)}
-                  label="Add Lowercase Letters"
-                />
-                <FormControlLabel
-                  control={(
-                    <Switch
-                      checked={hasSymbols}
-                      onChange={(e) => setHasSymbols(e.target.checked)}
-                      name="hasSymbols"
-                    />
-)}
-                  label="Add Symbols"
-                />
-                <FormControlLabel
-                  control={(
-                    <Switch
-                      checked={hasNumbers}
-                      onChange={(e) => setHasNumbers(e.target.checked)}
-                      name="hasNumbers"
-                    />
-)}
-                  label="Add Numbers"
-                />
-              </FormGroup>
-            </Grid>
+            <Checkbox
+              hasLowerCase={hasLowerCase}
+              hasUpperCase={hasUpperCase}
+              hasSymbols={hasSymbols}
+              hasNumbers={hasNumbers}
+              setHasLowerCase={setHasLowerCase}
+              setHasUpperCase={setHasUpperCase}
+              setHasNumbers={setHasNumbers}
+              setHasSymbols={setHasSymbols}
+            />
             <Grid item className="strength" sx={{ display: 'flex' }}>
-              <Strength passwordLength={passwordLength} />
+              <Strength
+                passwordLength={passwordLength}
+                hasUpperCase={hasUpperCase}
+                hasLowerCase={hasLowerCase}
+                hasSymbols={hasSymbols}
+                hasNumbers={hasNumbers}
+              />
             </Grid>
             <Grid item sx={{ paddingTop: '10px' }}>
               <Button
                 onClick={generatePassword}
                 className="button"
                 sx={{
-                  display: 'flex',
-                  background: '#A4FFAF',
-                  color: 'black',
-                  borderRadius: '5px',
+                  border: 'black 2px solid',
                   fontWeight: 'bold',
-                  '&:hover': { background: 'black', color: '#A4FFAF' },
-
+                  '&:hover': { background: 'black' },
                 }}
+
               >
                 Generate password
+                {' '}
+                <ArrowForwardIcon />
               </Button>
             </Grid>
           </Grid>
